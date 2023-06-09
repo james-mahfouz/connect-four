@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Slot from "../Slot";
+import PlayerName from "../PlayerNames";
+import { color } from "framer-motion";
 
 const Board: React.FC = () => {
   const [board, setBoard] = useState<string[][]>([
@@ -16,6 +18,16 @@ const Board: React.FC = () => {
   );
   const [oppPlayer, setOppPlayer] = useState<"player1" | "player2">("player2");
   const [gameOver, setGameOver] = useState(false);
+
+  const local_player1 = localStorage.getItem("player1");
+  const [player1, setPlayer1] = useState(
+    local_player1 == null ? "player1" : local_player1
+  );
+
+  const local_player2 = localStorage.getItem("player2");
+  const [player2, setPlayer2] = useState(
+    local_player2 == null ? "player2" : local_player2
+  );
 
   const updateBoard = (
     row: number,
@@ -82,6 +94,7 @@ const Board: React.FC = () => {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const column = parseInt(e.target.getAttribute("x"));
+
     let row = board.findIndex(
       (rowArr, index) => rowArr[column] !== "" || index === board.length - 1
     );
@@ -97,12 +110,29 @@ const Board: React.FC = () => {
     }
   };
 
+  const handleChangeNames = async () => {
+    await setPlayer1(localStorage.getItem("player1"));
+    await setPlayer2(localStorage.getItem("player2"));
+    console.log(player1, player2);
+  };
+  const handleRestart = () => {
+    setBoard([
+      ["", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", ""],
+    ]);
+    setGameOver(false);
+  };
+
   return (
     <div className="game-body">
+      <PlayerName activateFunction={handleChangeNames} />
       {gameOver && (
         <h1>Game Over! {oppPlayer === "player1" ? "Red" : "Black"} Wins!</h1>
       )}
-
       <h2 className="playerDisplay">
         {currPlayer === "player1" ? "Red" : "Black"}
       </h2>
