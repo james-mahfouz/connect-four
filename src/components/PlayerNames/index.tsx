@@ -36,15 +36,17 @@ const PlayerName: React.FC<ChildProps> = ({ activateFunction }) => {
     setIsOpen(true);
   };
 
-  const handleSave = async () => {
-    await localStorage.setItem("player1", player1);
-    await localStorage.setItem("player2", player2);
+  const handleSave = () => {
+    localStorage.setItem("player1", player1);
+    localStorage.setItem("player2", player2);
     handleClose();
     activateFunction();
   };
   return (
     <>
-      <Button onClick={handleOpen}>Change Names</Button>
+      <Button onClick={handleOpen} colorScheme="pink">
+        Change Names
+      </Button>
 
       <Modal isOpen={isOpen} onClose={handleClose}>
         <ModalOverlay />

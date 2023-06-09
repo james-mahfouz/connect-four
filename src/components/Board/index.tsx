@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import logo from "../../assets/logo.svg";
 import Slot from "../Slot";
 import PlayerName from "../PlayerNames";
 import { color } from "framer-motion";
+
+import { Button } from "@chakra-ui/react";
 
 const Board: React.FC = () => {
   const [board, setBoard] = useState<string[][]>([
@@ -110,11 +113,15 @@ const Board: React.FC = () => {
     }
   };
 
-  const handleChangeNames = async () => {
-    await setPlayer1(localStorage.getItem("player1"));
-    await setPlayer2(localStorage.getItem("player2"));
-    console.log(player1, player2);
+  // useEffect(() => {
+  //   console.log(player1, player2);
+  // }, [player1, player2]);
+
+  const handleChangeNames = () => {
+    setPlayer1(localStorage.getItem("player1"));
+    setPlayer2(localStorage.getItem("player2"));
   };
+
   const handleRestart = () => {
     setBoard([
       ["", "", "", "", "", "", ""],
@@ -129,13 +136,34 @@ const Board: React.FC = () => {
 
   return (
     <div className="game-body">
-      <PlayerName activateFunction={handleChangeNames} />
-      {gameOver && (
+      <div className="navbar">
+        <div>
+          <PlayerName activateFunction={handleChangeNames} />
+        </div>
+        <div>
+          <img src={logo} alt="" />
+        </div>
+        <div>
+          <Button
+            onClick={handleRestart}
+            colorScheme="cyan"
+            bg="rgb(235, 190, 70)"
+            color="#fff"
+          >
+            Restart
+          </Button>
+        </div>
+      </div>
+
+      <div className="players">
+        <div className="player"></div>
+      </div>
+      {/* {gameOver && (
         <h1>Game Over! {oppPlayer === "player1" ? "Red" : "Black"} Wins!</h1>
       )}
       <h2 className="playerDisplay">
         {currPlayer === "player1" ? "Red" : "Black"}
-      </h2>
+      </h2> */}
       <div className="board" onClick={gameOver ? undefined : handleClick}>
         {board.map((row, i) => (
           <div className="row">
