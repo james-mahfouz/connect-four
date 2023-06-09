@@ -104,12 +104,16 @@ const Board: React.FC = () => {
       )}
 
       <h2 id="playerDisplay">{currPlayer === "player1" ? "Red" : "Black"}</h2>
-      <div id="board" onClick={gameOver ? undefined : handleClick}>
-        {board.map((row, i) =>
-          row.map((player, j) => (
-            <Slot key={`${i}-${j}`} player={player} y={i} x={j} />
-          ))
-        )}
+      <div className="board" onClick={gameOver ? undefined : handleClick}>
+        {board.map((row, i) => (
+          <div className="row">
+            {row.map((player, j) => (
+              <div className="slot-div">
+                <Slot key={`${i}-${j}`} player={player} y={i} x={j} />
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </>
   );
