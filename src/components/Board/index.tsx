@@ -98,12 +98,14 @@ const Board: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="game-body">
       {gameOver && (
         <h1>Game Over! {oppPlayer === "player1" ? "Red" : "Black"} Wins!</h1>
       )}
 
-      <h2 id="playerDisplay">{currPlayer === "player1" ? "Red" : "Black"}</h2>
+      <h2 className="playerDisplay">
+        {currPlayer === "player1" ? "Red" : "Black"}
+      </h2>
       <div className="board" onClick={gameOver ? undefined : handleClick}>
         {board.map((row, i) => (
           <div className="row">
@@ -115,7 +117,7 @@ const Board: React.FC = () => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
