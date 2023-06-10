@@ -35,6 +35,9 @@ const Board: React.FC = () => {
     local_player2 == null ? "player2" : local_player2
   );
 
+  let [player1Score, setPlayer1Score] = useState(0);
+  let [player2Score, setPlayer2Score] = useState(0);
+
   const updateBoard = (
     row: number,
     column: number,
@@ -91,6 +94,11 @@ const Board: React.FC = () => {
         count++;
       }
       if (count === 4) {
+        if (currPlayer === "player1") {
+          setPlayer1Score((player1Score += 1));
+        } else {
+          setPlayer2Score((player2Score += 1));
+        }
         return true;
       }
     }
@@ -161,11 +169,11 @@ const Board: React.FC = () => {
             <img src={yellow_smiley} alt="" />
           </div>
           <div>{player1}</div>
-          <div className="yell-score">3</div>
+          <div className="yell-score">{player1Score}</div>
         </div>
 
         <div className="player red-player">
-          <div className="red-score">3</div>
+          <div className="red-score">{player2Score}</div>
           <div>{player2}</div>
           <div className="red-smiley">
             <img src={red_smiley} alt="" />
