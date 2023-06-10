@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Slot from "../Slot";
 import PlayerName from "../PlayerNames";
-import { color } from "framer-motion";
+import { motion } from "framer-motion";
 
 import logo from "../../assets/logo.svg";
 import red_smiley from "../../assets/red_smiley.svg";
@@ -18,6 +18,7 @@ const Board: React.FC = () => {
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
   ]);
+  const [winningSlots, setWinningSlots] = useState<number[][]>([]);
 
   const [currPlayer, setCurrPlayer] = useState<"player1" | "player2">(
     "player1"
@@ -58,8 +59,13 @@ const Board: React.FC = () => {
       [1, 1],
       [1, -1],
     ];
+    const slots: number[][] = [];
+    slots.push([row, column]);
 
     for (const [dx, dy] of directions) {
+      const slots: number[][] = [];
+      slots.push([row, column]);
+
       let count = 1;
       let nextRow;
       let nextColumn;
@@ -90,10 +96,12 @@ const Board: React.FC = () => {
             break;
           }
         }
+        slots.push([nextRow, nextColumn]);
         i++;
         count++;
       }
       if (count === 4) {
+        setWinningSlots(slots);
         if (currPlayer === "player1") {
           setPlayer1Score((player1Score += 1));
         } else {
@@ -188,12 +196,24 @@ const Board: React.FC = () => {
       </h2> */}
       <div className="board" onClick={gameOver ? undefined : handleClick}>
         {board.map((row, i) => (
-          <div className="row">
-            {row.map((player, j) => (
-              <div className="slot-div">
-                <Slot key={`${i}-${j}`} player={player} y={i} x={j} />
-              </div>
-            ))}
+          <div className="row" key={i}>
+            {row.map((player, j) => {
+              const isWinningSlot = winningSlots.some(
+                ([row, column]) => row === i && column === j
+              );
+              return (
+                <div className="slot-div" key={j}>
+                  <motion.div
+                    className={`slot ${isWinningSlot ? "winning-slot" : ""}`}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Slot player={player} y={i} x={j} />
+                  </motion.div>
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
