@@ -16,6 +16,7 @@ const Slot: React.FC<SlotProps> = ({ player, y, x }) => {
           src={player === "player1" ? yellowToken : redToken}
           width="100%"
           height="100%"
+          className="token"
         />
       )}
     </div>

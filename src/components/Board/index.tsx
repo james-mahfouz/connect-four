@@ -99,6 +99,7 @@ const Board: React.FC = () => {
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (gameOver) return;
     const column = parseInt(e.target.getAttribute("x"));
 
     let row = board.findIndex(
@@ -115,10 +116,6 @@ const Board: React.FC = () => {
       setOppPlayer(currPlayerCopy);
     }
   };
-
-  // useEffect(() => {
-  //   console.log(player1, player2);
-  // }, [player1, player2]);
 
   const handleChangeNames = () => {
     setPlayer1(localStorage.getItem("player1"));
@@ -164,11 +161,11 @@ const Board: React.FC = () => {
             <img src={yellow_smiley} alt="" />
           </div>
           <div>{player1}</div>
-          <div>3</div>
+          <div className="yell-score">3</div>
         </div>
 
         <div className="player red-player">
-          <div>3</div>
+          <div className="red-score">3</div>
           <div>{player2}</div>
           <div className="red-smiley">
             <img src={red_smiley} alt="" />
