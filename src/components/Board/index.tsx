@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Slot from "../Slot";
 import PlayerName from "../PlayerNames";
 import { motion } from "framer-motion";
+import useWindowSize from "react-use/lib/useWindowSize";
+import Confetti from "react-confetti";
 
 import logo from "../../assets/logo.svg";
 import red_smiley from "../../assets/red_smiley.svg";
@@ -10,6 +12,7 @@ import yellow_smiley from "../../assets/yellow_smiley.svg";
 import { Button } from "@chakra-ui/react";
 
 const Board: React.FC = () => {
+  const { width, height } = useWindowSize();
   const [board, setBoard] = useState<string[][]>([
     ["", "", "", "", "", "", ""],
     ["", "", "", "", "", "", ""],
@@ -163,6 +166,7 @@ const Board: React.FC = () => {
 
   return (
     <div className="game-body">
+      {gameOver && <Confetti width={width} height={height} />}
       <div className="navbar">
         <div>
           <PlayerName activateFunction={handleChangeNames} />
