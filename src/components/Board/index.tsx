@@ -4,6 +4,7 @@ import PlayerName from "../PlayerNames";
 import { motion } from "framer-motion";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
+import { darken } from "polished";
 
 import logo from "../../assets/logo.svg";
 import red_smiley from "../../assets/red_smiley.svg";
@@ -42,6 +43,16 @@ const Board: React.FC = () => {
   let [player1Score, setPlayer1Score] = useState(0);
   let [player2Score, setPlayer2Score] = useState(0);
 
+  const [colorTurn, setColorTurn] = useState(
+    currPlayer === "player1" ? "#FFCF5B" : "#FF4380"
+  );
+  const [footerColor, setFooterColor] = useState("#0F61E7");
+
+  useEffect(() => {
+    if (!gameOver) {
+      setColorTurn(currPlayer === "player1" ? "#FFCF5B" : "#FF4380");
+    }
+  }, [currPlayer]);
   const updateBoard = (
     row: number,
     column: number,
@@ -107,9 +118,11 @@ const Board: React.FC = () => {
         setWinningSlots(slots);
         if (currPlayer === "player1") {
           setPlayer1Score((player1Score += 1));
+          setFooterColor("#FFCF5B");
           speakWinning(player1);
         } else {
           setPlayer2Score((player2Score += 1));
+          setFooterColor("#FF4380");
           speakWinning(player2);
         }
         return true;
@@ -154,6 +167,8 @@ const Board: React.FC = () => {
     ]);
     setGameOver(false);
     setWinningSlots([]);
+    setFooterColor("#0F61E7");
+    setColorTurn(currPlayer === "player1" ? "#FFCF5B" : "#FF4380");
   };
 
   const speakWinning = (winner) => {
@@ -177,9 +192,11 @@ const Board: React.FC = () => {
         <div>
           <Button
             onClick={handleRestart}
-            colorScheme="cyan"
             bg="rgb(235, 190, 70)"
             color="#fff"
+            _hover={{
+              bg: darken(0.1, "rgb(235, 190, 70)"),
+            }}
           >
             Restart Game
           </Button>
@@ -194,7 +211,19 @@ const Board: React.FC = () => {
           <div>{player1}</div>
           <div className="yell-score">{player1Score}</div>
         </div>
-
+        <div className="player-turn" style={{ backgroundColor: colorTurn }}>
+          {gameOver && (
+            <h2>
+              Game Over!
+              <br /> {oppPlayer === "player1" ? player1 : player2} Wins!
+            </h2>
+          )}
+          {!gameOver && (
+            <h2 className="playerDisplay">
+              {currPlayer === "player1" ? player1 : player2}'s Turn
+            </h2>
+          )}
+        </div>
         <div className="player red-player">
           <div className="red-score">{player2Score}</div>
           <div>{player2}</div>
@@ -203,12 +232,7 @@ const Board: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* {gameOver && (
-        <h1>Game Over! {oppPlayer === "player1" ? "Red" : "Black"} Wins!</h1>
-      )}
-      <h2 className="playerDisplay">
-        {currPlayer === "player1" ? "Red" : "Black"}
-      </h2> */}
+
       <div className="board" onClick={gameOver ? undefined : handleClick}>
         {board.map((row, i) => (
           <div className="row" key={i}>
@@ -232,6 +256,10 @@ const Board: React.FC = () => {
           </div>
         ))}
       </div>
+      <div
+        className="game-footer"
+        style={{ backgroundColor: footerColor }}
+      ></div>
     </div>
   );
 };
