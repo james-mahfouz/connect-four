@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slot from "../Slot";
 import PlayerName from "../PlayerNames";
 import { motion } from "framer-motion";
@@ -104,8 +104,10 @@ const Board: React.FC = () => {
         setWinningSlots(slots);
         if (currPlayer === "player1") {
           setPlayer1Score((player1Score += 1));
+          speakWinning(player1);
         } else {
           setPlayer2Score((player2Score += 1));
+          speakWinning(player2);
         }
         return true;
       }
@@ -148,6 +150,15 @@ const Board: React.FC = () => {
       ["", "", "", "", "", "", ""],
     ]);
     setGameOver(false);
+    setWinningSlots([]);
+  };
+
+  const speakWinning = (winner) => {
+    const speechText = `${winner} is the winner!`;
+
+    const utterance = new SpeechSynthesisUtterance(speechText);
+
+    speechSynthesis.speak(utterance);
   };
 
   return (
