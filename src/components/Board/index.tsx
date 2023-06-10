@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import logo from "../../assets/logo.svg";
 import Slot from "../Slot";
 import PlayerName from "../PlayerNames";
 import { color } from "framer-motion";
+
+import logo from "../../assets/logo.svg";
+import red_smiley from "../../assets/red_smiley.svg";
+import yellow_smiley from "../../assets/yellow_smiley.svg";
 
 import { Button } from "@chakra-ui/react";
 
@@ -150,13 +153,27 @@ const Board: React.FC = () => {
             bg="rgb(235, 190, 70)"
             color="#fff"
           >
-            Restart
+            Restart Game
           </Button>
         </div>
       </div>
 
       <div className="players">
-        <div className="player"></div>
+        <div className="player yellow-player">
+          <div className="yellow-smiley">
+            <img src={yellow_smiley} alt="" />
+          </div>
+          <div>{player1}</div>
+          <div>3</div>
+        </div>
+
+        <div className="player red-player">
+          <div>3</div>
+          <div>{player2}</div>
+          <div className="red-smiley">
+            <img src={red_smiley} alt="" />
+          </div>
+        </div>
       </div>
       {/* {gameOver && (
         <h1>Game Over! {oppPlayer === "player1" ? "Red" : "Black"} Wins!</h1>
